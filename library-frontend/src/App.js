@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, useSubscription } from '@apollo/client'
+import { BOOK_ADDED } from './queries'
 
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -26,6 +27,17 @@ const App = () => {
       setToken(loggedUserToken)
     }
   }, []) // eslint-disable-line
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      console.log(data)
+      const addedBook = data.data.bookAdded
+      window.alert(`Book: "${addedBook.title}" added`)
+      client.refetchQueries({
+        include: ['allBooks'],
+      })
+    },
+  })
 
   const notify = (message) => {
     setErrorMessage(message)

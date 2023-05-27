@@ -19,6 +19,11 @@ const Books = (props) => {
     return null
   }
 
+  const filterGenres = (activeGenre) => {
+    setGenre(activeGenre)
+    bookResult.refetch({ genre: activeGenre })
+  }
+
   return (
     <div>
       <h2>books</h2>
@@ -47,11 +52,11 @@ const Books = (props) => {
       </table>
       <div>
         {genreResult.data.allGenres.map((g) => (
-          <button key={g} onClick={() => setGenre(g)}>
+          <button key={g} onClick={() => filterGenres(g)}>
             {g}
           </button>
         ))}
-        <button onClick={() => setGenre('')}> all genres</button>
+        <button onClick={() => filterGenres('')}> all genres</button>
       </div>
     </div>
   )
